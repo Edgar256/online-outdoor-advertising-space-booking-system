@@ -59,7 +59,7 @@ if ($conn->query($sql_create_admins_table) !== TRUE) {
 // sql to create locations table
 $sql_create_locations_table = "CREATE TABLE locations (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL
+    title VARCHAR(255) NOT NULL,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
 
@@ -69,12 +69,12 @@ if ($conn->query($sql_create_locations_table) !== TRUE) {
 }
 
 // sql to create space table
-$sql_create_prperties_table = "CREATE TABLE spaces (
+$sql_create_spaces_table = "CREATE TABLE spaces (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
+    title VARCHAR(255) NOT NULL,    
     description VARCHAR(255) NOT NULL,
-    price VARCHAR(255) NOT NULL,
-    image LONGBLOB NOT NULL,  
+    price DECIMAL(10,2) NOT NULL,
+    image BLOB NOT NULL,  
     is_booked TINYINT(1) NOT NULL DEFAULT 0,
 
     location INT(6) UNSIGNED,
@@ -84,13 +84,13 @@ $sql_create_prperties_table = "CREATE TABLE spaces (
     FOREIGN KEY (creator) REFERENCES admins(id),
 
     user INT(6) UNSIGNED,
-    FOREIGN KEY (user) REFERENCES users(id) NULL,
+    FOREIGN KEY (user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL,
      
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )";
 
 // create Managers table
-if ($conn->multi_query($sql_create_prperties_table) !== TRUE) {
+if ($conn->multi_query($sql_create_spaces_table) !== TRUE) {
     // DISPLAY ERROR HERE IF DB HAS NOT BEEN CREATED
     // echo "Error creating table: " . $conn->error;
 }

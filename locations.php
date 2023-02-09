@@ -1,3 +1,21 @@
+<?php
+// import Config File
+require('./config/config.php');
+
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+// Define variables and initialize with empty values
+$title = $list = "";
+$create_err = "";
+
+$table = "locations";
+
+$sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
+$list = $conn->query($sql);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
