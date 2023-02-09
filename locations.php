@@ -9,6 +9,8 @@ if (!isset($_SESSION)) {
 // Define variables and initialize with empty values
 $title = $list = "";
 $create_err = "";
+$success_msg = "";
+
 
 $table = "locations";
 
@@ -321,8 +323,10 @@ $list = $conn->query($sql);
                       <div class="card-body">
                         <h5 class="card-title">Create a New Location</h5>
 
+                        <div class="error"></div>
+
                         <!-- General Form Elements -->
-                        <form>
+                        <form method="post" id="createLocationForm">
                           <div class="row mb-3">
                             <label for="title" class="col-sm-2 col-form-label">Title</label>
                             <div class="col-sm-10">
@@ -350,48 +354,26 @@ $list = $conn->query($sql);
                           <thead>
                             <tr>
                               <th scope="col">#</th>
-                              <th scope="col">Name</th>
-                              <th scope="col">Position</th>
-                              <th scope="col">Age</th>
-                              <th scope="col">Start Date</th>
+                              <th scope="col">Title</th>
+                              <th scope="col">Date Created</th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
-                              <th scope="row">1</th>
-                              <td>Brandon Jacob</td>
-                              <td>Designer</td>
-                              <td>28</td>
-                              <td>2016-05-25</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">2</th>
-                              <td>Bridie Kessler</td>
-                              <td>Developer</td>
-                              <td>35</td>
-                              <td>2014-12-05</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">3</th>
-                              <td>Ashleigh Langosh</td>
-                              <td>Finance</td>
-                              <td>45</td>
-                              <td>2011-08-12</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">4</th>
-                              <td>Angus Grady</td>
-                              <td>HR</td>
-                              <td>34</td>
-                              <td>2012-06-11</td>
-                            </tr>
-                            <tr>
-                              <th scope="row">5</th>
-                              <td>Raheem Lehner</td>
-                              <td>Dynamic Division Officer</td>
-                              <td>47</td>
-                              <td>2011-04-19</td>
-                            </tr>
+                          <tbody id="results">
+
+                            <?php
+                            if ($list->num_rows > 0) {
+                              while ($row = $list->fetch_assoc()) {
+                                echo "<tr>";
+                                echo "<td scope='row'> #" . $row['id'] . "</td>";
+                                echo "<td>" . $row['title'] . "</td>";
+                                echo "<td>" . $row['reg_date'] . "</td>";
+                                echo "</tr>";
+                              }
+                            } else {
+                              echo "<div class='alert alert-danger'>No Record Found</div>";
+                            }
+                            ?>
+
                           </tbody>
                         </table>
                         <!-- End Default Table Example -->
@@ -427,6 +409,32 @@ $list = $conn->query($sql);
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- JQUERY LINK -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <script>
+    $(document).ready(function () {
+      $("#createLocationForm").submit(function (e) {
+        e.preventDefault();
+        var title = $("#title").val();
+        $.ajax({
+          url: "./helpers/create_location.php",
+          type: "post",
+          data: { title },
+          success: function (response) {
+            $("#results").html(response);
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            // handle error
+            console.log({ jqXHR, textStatus, errorThrown });
+          }
+
+        })
+
+      });
+    });
+  </script>
 
 </body>
 

@@ -1,3 +1,26 @@
+<?php
+// import Config File
+require('./config/config.php');
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Define variables and initialize with empty values
+$users = $list = "";
+$create_err = "";
+$success_msg = "";
+
+$table = "locations";
+
+$sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
+$list = $conn->query($sql);
+
+// require create space file
+include('./helpers/create_space.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,6 +53,7 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/custom.css">
 
     <!-- =======================================================
   * Template Name: NiceAdmin - v2.5.0
@@ -289,15 +313,24 @@
 
         <section class="section">
             <div class="row">
-                
+
                 <div class="col-lg-7">
+
+                    <?php
+                    if (!empty($create_err)) {
+                        echo '<div class="alert alert-danger" role="alert">' . $create_err . '</div>';
+                    }
+                    if (!empty($success_msg)) {
+                        echo '<div class="alert alert-success" role="alert">' . $success_msg . '</div>';
+                    }
+                    ?>
 
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Create a New Space</h5>
 
                             <!-- General Form Elements -->
-                            <form>
+                            <form method="post" id="createSpaceForm" enctype="multipart/form-data">
                                 <div class="row mb-3">
                                     <label for="title" class="col-sm-2 col-form-label">Title</label>
                                     <div class="col-sm-10">
@@ -323,23 +356,35 @@
                                         <select class="form-select" aria-label="Location" name="location" id="location"
                                             required>
                                             <option selected>Select Location</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
+                                            <?php
+                                            if ($list->num_rows > 0) {
+                                                while ($row = $list->fetch_assoc()) {
+                                                    $title = mb_convert_case($row["title"], MB_CASE_TITLE, "UTF-8");
+                                                    $id = $row["id"];
+                                                    echo "<option value=" . $id . ">" . $title . "</option>";
+                                                }
+                                            } else {
+                                                echo "No Locations found";
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
                                     <div class="col-sm-10">
-                                        <input class="form-control" type="file" id="formFile">
+                                        <input class="form-control" type="file" id="image"
+                                            accept=" image/gif, image/jpeg,image/jpg, image/png" name="image" required>
                                     </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <input type="text" value='<?php echo $_SESSION['id'] ?>' id="creator" name="creator" hidden>
                                 </div>
 
                                 <div class="mb-3 d-flex justify-content-center align-items-center">
                                     <div class="">
-                                        <button type="submit" class="btn btn-primary">Submit
-                                            Form</button>
+                                        <input type="submit" name="form_create_space" value="Submit Form"
+                                            class="btn btn-primary rounded-pill">
                                     </div>
                                 </div>
 
@@ -358,17 +403,16 @@
 
                             <div class="col-12 p-2">
                                 <div class="card position-relative">
-                                    <img src="assets/img/card.jpg" class="card-img-top" alt="...">
+                                    <img id="imagePreview" class="card-img-top" alt="..." />
                                     <div class="position-absolute right-0 p-1">
-                                        <span class="badge bg-danger">Ntinda</span>
+                                        <span class="badge bg-danger" id="locationText"></span>
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title my-1">Card with an image on top</h5>
-                                        <p class="card-text">Price: $ 10,000 per month</p>
-                                        <p class="card-text">Some quick example text to build on the card title and make
-                                            up the bulk
-                                            of the card's content.</p>
-                                        <button type="button" class="btn btn-success rounded-pill px-5">Book</button>
+                                        <h5 class="card-title my-1" id="titleText"></h5>
+                                        <p class="card-text">Price: $ <span id="priceText"></span> per month</p>
+                                        <p class="card-text" id="descriptionText"></p>
+                                        <button type="button" class="btn btn-success rounded-pill px-5"
+                                            disabled>Book</button>
                                     </div>
                                 </div>
                             </div>
@@ -397,6 +441,43 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+
+    <!-- JQUERY LINK -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#title").keyup(function (e) {
+                var title = $("#title").val();
+                $("#titleText").text(title);
+            });
+            $("#price").keyup(function (e) {
+                var price = $("#price").val();
+                $("#priceText").text(price);
+            });
+            $("#description").keyup(function (e) {
+                var description = $("#description").val();
+                $("#descriptionText").text(description);
+            });
+            $("#location").change(function (e) {
+                var selectedOption = $(this).find("option:selected");
+                $("#locationText").text(selectedOption.text());
+            });
+            $("#image").keyup(function (e) {
+                var description = $("#description").val();
+                $("#descriptionText").text(description);
+            });
+            $("#image").change(function () {
+                var file = this.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $("#imagePreview").attr("src", event.target.result);
+                };
+                reader.readAsDataURL(file);
+            });
+
+        });
+    </script>
 
 </body>
 

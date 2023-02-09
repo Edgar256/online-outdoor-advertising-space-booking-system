@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Validate email
     if (empty(trim($_POST["email"]))) {
-        $email_err = 'Email is required.';
+        $creating_acc_err = 'Email is required.';
     } else {
 
         $email = test_input($_POST["email"]);

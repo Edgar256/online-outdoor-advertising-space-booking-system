@@ -25,7 +25,7 @@
 
       <li class="nav-item">
         <a class="nav-link collapsed" href="locations.php">
-          <i class="bi bi-person"></i>
+          <i class="bi bi-pin-map-fill"></i>
           <span>Locations</span>
         </a>
       </li><!-- End Locations Page Nav -->
