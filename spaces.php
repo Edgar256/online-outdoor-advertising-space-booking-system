@@ -343,7 +343,6 @@ $list = $conn->query($sql);
 
                                                         echo "<tr>";
                                                         echo "<td scope='row'> #" . $row['id'] . "</td>";
-                                                        // echo "<td><img src='data:image/jpeg;base64, base64_encode(" . $imageData . ")  '/></td>";
                                                         echo '<td><img class="imgTable" src="data:image/jpeg;base64,' . base64_encode($imageData) . '"/></td>';
                                                         echo "<td>" . $row['title'] . "</td>";
                                                         echo "<td>" . $row['description'] . "</td>";
