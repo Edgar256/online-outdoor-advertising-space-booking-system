@@ -1,3 +1,27 @@
+<?php
+// import Config File
+require_once('./config/config.php');
+
+// set FALSE to AUTH_ACTIVE SESSION VARIABLE
+if (isset($_SESSION)) {
+  session_start();
+  $_SESSION['auth_active'] = FALSE;
+} else {
+  session_start();
+  $_SESSION['auth_active'] = FALSE;
+}
+
+// Define variables and initialize with empty values
+$names = $email = $password = "";
+
+$creating_acc_err = "";
+$success_msg = "";
+
+// require user-register.php
+require('./helpers/user_login.php');
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -60,29 +84,31 @@
                     <p class="text-center small">Enter your username & password to login</p>
                   </div>
 
-                  <form class="row g-3 needs-validation" novalidate>
+                  <?php if (!empty($creating_acc_err)) {
+                    echo '<div class="alert alert-danger" role="alert">' . $creating_acc_err . '</div>';
+                  } ?>
+
+                  <?php if (!empty($success_msg)) {
+                    echo '<div class="alert alert-success" role="alert">' . $success_msg . '</div>';
+                  } ?>
+
+                  <form class="row g-3 needs-validation" action='<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>' method="post" novalidate>
 
                     <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
+                      <label for="yourUsername" class="form-label">Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
+                        <input type="text" name="email" class="form-control" id="email" required>
                         <div class="invalid-feedback">Please enter your username.</div>
                       </div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourPassword" class="form-label">Password</label>
-                      <input type="password" name="password" class="form-control" id="yourPassword" required>
+                      <label for="password" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="password" required>
                       <div class="invalid-feedback">Please enter your password!</div>
                     </div>
 
-                    <div class="col-12">
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="remember" value="true" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                      </div>
-                    </div>
                     <div class="col-12">
                       <button class="btn btn-primary w-100" type="submit">Login</button>
                     </div>
