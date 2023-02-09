@@ -62,23 +62,17 @@
 
                   <form class="row g-3 needs-validation" novalidate>
                     <div class="col-12">
-                      <label for="yourName" class="form-label">Your Name</label>
-                      <input type="text" name="name" class="form-control" id="yourName" required>
-                      <div class="invalid-feedback">Please, enter your name!</div>
+                      <label for="yourName" class="form-label">Your Names</label>
+                      <input type="text" name="names" class="form-control" id="names" required>
+                      <div class="invalid-feedback">Please, enter your names!</div>
                     </div>
 
                     <div class="col-12">
-                      <label for="yourEmail" class="form-label">Your Email</label>
-                      <input type="email" name="email" class="form-control" id="yourEmail" required>
-                      <div class="invalid-feedback">Please enter a valid Email adddress!</div>
-                    </div>
-
-                    <div class="col-12">
-                      <label for="yourUsername" class="form-label">Username</label>
+                      <label for="yourUsername" class="form-label">Your Email</label>
                       <div class="input-group has-validation">
                         <span class="input-group-text" id="inputGroupPrepend">@</span>
-                        <input type="text" name="username" class="form-control" id="yourUsername" required>
-                        <div class="invalid-feedback">Please choose a username.</div>
+                        <input type="text" name="email" class="form-control" id="email" required>
+                        <div class="invalid-feedback">Please enter your email.</div>
                       </div>
                     </div>
 
@@ -97,7 +91,7 @@
                       </div>
                     </div>
                     <div class="col-12">
-                      <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                      <input class="btn btn-primary w-100" type="submit" value="Create Account" disabled />
                     </div>
                     <div class="col-12">
                       <p class="small mb-0">Already have an account? <a href="user-login.php">Log in</a></p>
