@@ -1,3 +1,23 @@
+<?php
+// import Config File
+require('./config/config.php');
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Define variables and initialize with empty values
+$title = $list = "";
+$create_err = "";
+$success_msg = "";
+
+$table = "spaces";
+
+$sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
+$list = $conn->query($sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,6 +50,7 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/custom.css">
 
     <!-- =======================================================
   * Template Name: NiceAdmin - v2.5.0
@@ -297,59 +318,49 @@
 
                             <!-- Recent Sales -->
                             <div class="col-12">
-                                <div class=" overflow-auto">                                    
+                                <div class=" overflow-auto">
 
                                     <div class="card-body">
-                                        <table class="table table-borderless datatable">
+                                        <table class="table table-borderless datatable table-striped">
                                             <thead>
                                                 <tr>
                                                     <th scope="col">#</th>
-                                                    <th scope="col">Customer</th>
-                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Image</th>
+                                                    <th scope="col">Title</th>
+                                                    <th scope="col">Description</th>
                                                     <th scope="col">Price</th>
                                                     <th scope="col">Status</th>
+                                                    <th scope="col">Date Posted</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <th scope="row"><a href="#">#2457</a></th>
-                                                    <td>Brandon Jacob</td>
-                                                    <td><a href="#" class="text-primary">At praesentium minu</a></td>
-                                                    <td>$64</td>
-                                                    <td><span class="badge bg-success">Approved</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"><a href="#">#2147</a></th>
-                                                    <td>Bridie Kessler</td>
-                                                    <td><a href="#" class="text-primary">Blanditiis dolor omnis
-                                                            similique</a></td>
-                                                    <td>$47</td>
-                                                    <td><span class="badge bg-warning">Pending</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"><a href="#">#2049</a></th>
-                                                    <td>Ashleigh Langosh</td>
-                                                    <td><a href="#" class="text-primary">At recusandae consectetur</a>
-                                                    </td>
-                                                    <td>$147</td>
-                                                    <td><span class="badge bg-success">Approved</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"><a href="#">#2644</a></th>
-                                                    <td>Angus Grady</td>
-                                                    <td><a href="#" class="text-primar">Ut voluptatem id earum et</a>
-                                                    </td>
-                                                    <td>$67</td>
-                                                    <td><span class="badge bg-danger">Rejected</span></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row"><a href="#">#2644</a></th>
-                                                    <td>Raheem Lehner</td>
-                                                    <td><a href="#" class="text-primary">Sunt similique distinctio</a>
-                                                    </td>
-                                                    <td>$165</td>
-                                                    <td><span class="badge bg-success">Approved</span></td>
-                                                </tr>
+
+                                                <?php
+                                                if ($list->num_rows > 0) {
+                                                    while ($row = $list->fetch_assoc()) {
+                                                        $imageData = $row['image'];
+                                                        // $imageData = base64_encode($imageData);
+
+                                                        echo "<tr>";
+                                                        echo "<td scope='row'> #" . $row['id'] . "</td>";
+                                                        // echo "<td><img src='data:image/jpeg;base64, base64_encode(" . $imageData . ")  '/></td>";
+                                                        echo '<td><img class="imgTable" src="data:image/jpeg;base64,' . base64_encode($imageData) . '"/></td>';
+                                                        echo "<td>" . $row['title'] . "</td>";
+                                                        echo "<td>" . $row['description'] . "</td>";
+                                                        echo "<td> $ " . $row['price'] . "</td>";
+                                                        if ($row['is_booked'] == 1) {
+                                                            echo "<td><span class='badge bg-success'>Booked</span></td>";
+                                                        } else {
+                                                            echo "<td><span class='badge bg-secondary'>Available</span></td>";
+                                                        }
+                                                        echo "<td>" . $row['reg_date'] . "</td>";
+                                                        echo "</tr>";
+                                                    }
+                                                } else {
+                                                    echo "<div class='alert alert-danger'>No Record Found</div>";
+                                                }
+                                                ?>
+
                                             </tbody>
                                         </table>
 

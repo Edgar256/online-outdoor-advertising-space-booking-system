@@ -11,13 +11,13 @@ $title = $list = "";
 $create_err = "";
 $success_msg = "";
 
-
 $table = "locations";
 
 $sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
 $list = $conn->query($sql);
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
