@@ -44,12 +44,16 @@
     <div class="container-fluid landing-area py-5">
       <div class="container py-5 my-5">
         <div class="col-8 text-white display-2 pt-5">
-          Your One Stop Online Booking Advertsing Platform
+          Your One Stop Online Booking Advertising Platform
         </div>
-        <div class="py-3">
-          <a href="user-login.php" class="btn btn-primary">Login</a>
-          <a href="user-register.php" class="btn btn-outline-light mx-5">Register</a>
-        </div>
+        <?php
+        if ((!isset($_SESSION['role']) == 'USER')) {
+          echo '<div class="py-3">
+          <a href="user-login.php" class="btn btn-primary rounded-pill">Login</a>
+          <a href="user-register.php" class="btn btn-outline-light rounded-pill mx-5">Create Account</a>
+        </div>';
+        }
+        ?>
       </div>
     </div>
     <div class="container d-flex p-5">
