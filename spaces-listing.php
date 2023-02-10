@@ -21,6 +21,11 @@ $sql = "SELECT spaces.*, locations.title AS location
 
 $list = $conn->query($sql);
 
+$table = "locations";
+
+$sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
+$locations = $conn->query($sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -70,14 +75,22 @@ $list = $conn->query($sql);
             <div class="container">
                 <form action="post" class="d-flex">
                     <div class="col-5 p-1">
-                        <input type="text" class="form-control">
+                        <input type="text" class="form-control" name="title" id="title">
                     </div>
                     <div class="col-5 p-1">
                         <select class="form-select" aria-label="Default select example">
                             <option selected>Select Location</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            <?php
+                            if ($locations->num_rows > 0) {
+                                while ($row = $locations->fetch_assoc()) {
+                                    $title = mb_convert_case($row["title"], MB_CASE_TITLE, "UTF-8");
+                                    $id = $row["id"];
+                                    echo "<option value=" . $id . ">" . $title . "</option>";
+                                }
+                            } else {
+                                echo "No Locations found";
+                            }
+                            ?>
                         </select>
                     </div>
                     <div class="col-2 p-1">
