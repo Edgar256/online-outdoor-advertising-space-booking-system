@@ -3,23 +3,24 @@
 require_once('../config/config.php');
 
 // Processing form data when form is submitted                
-if (isset($_POST['title']) || isset($_POST['location_id'])) {
+if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
 
-    $title = $_POST['title'];
+    $searchTerm = $_POST['searchTerm'];
     $location_id = $_POST['location_id'];
 
     // return error if both are empty
-    if (empty(trim($_POST["title"])) && empty(trim($_POST["location_id"]))) {
+    if (empty(trim($_POST["searchTerm"])) && empty(trim($_POST["location_id"]))) {
         $search_err = '<div class="alert alert-danger text-center mx-auto">
                             Please enter a property name or location.</div>';
     }
 
-    if (!empty(trim($_POST["title"])) && empty(trim($_POST["location_id"]))) {
-        $title = trim($_POST["title"]);
-        $title = mb_strtolower($title);
-        $title = ucwords($title);
-        $title = mysqli_real_escape_string($conn, $title);
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(title) LIKE UPPER('%$title%') ORDER BY reg_date DESC";
+    if (!empty(trim($_POST["searchTerm"])) && empty(trim($_POST["location_id"]))) {
+        $searchTerm = trim($_POST["searchTerm"]);
+        $searchTerm = mb_strtolower($searchTerm);
+        $searchTerm = ucwords($searchTerm);
+        $searchTerm = mysqli_real_escape_string($conn, $searchTerm);
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') ORDER BY reg_date DESC";
+
         $result = $conn->query($query);
         $spaces_list = $conn->query($query);
 
@@ -29,7 +30,7 @@ if (isset($_POST['title']) || isset($_POST['location_id'])) {
                 $description = mb_convert_case($row["description"], MB_CASE_TITLE, "UTF-8");
                 $price = number_format($row["price"]);
                 $imageData = $row['image'];
-                $location = $row['location'];
+                $location = $row['location_title'];
 
                 echo '<div class="col-4 p-2">
                         <div class="card position-relative">
@@ -52,7 +53,7 @@ if (isset($_POST['title']) || isset($_POST['location_id'])) {
         }
     }
 
-    if (empty(trim($_POST["title"])) && !empty(trim($_POST["location_id"]))) {
+    if (empty(trim($_POST["searchTerm"])) && !empty(trim($_POST["location_id"]))) {
         $location_id = trim($_POST["location_id"]);
         $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id  WHERE location='$location_id' ORDER BY reg_date DESC";
         $result = $conn->query($query);
@@ -87,12 +88,14 @@ if (isset($_POST['title']) || isset($_POST['location_id'])) {
         }
     }
 
-    if (!empty(trim($_POST["location_id"])) && !empty(trim($_POST["title"]))) {
-        $title = trim($_POST["title"]);
-        $title = mb_strtolower($title);
-        $title = ucwords($title);
-        $title = mysqli_real_escape_string($conn, $title);
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(title) LIKE UPPER('%$title%') AND location='$location_id' ORDER BY reg_date DESC";
+    if (!empty(trim($_POST["location_id"])) && !empty(trim($_POST["searchTerm"]))) {
+        $searchTerm = trim($_POST["searchTerm"]);
+        $location_id = trim($_POST["location_id"]);
+        $searchTerm = mb_strtolower($searchTerm);
+        $searchTerm = ucwords($searchTerm);
+        $searchTerm = mysqli_real_escape_string($conn, $searchTerm);        
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') AND location='$location_id' ORDER BY reg_date DESC";
+
         $result = $conn->query($query);
         $spaces_list = $conn->query($query);
 
@@ -102,7 +105,7 @@ if (isset($_POST['title']) || isset($_POST['location_id'])) {
                 $description = mb_convert_case($row["description"], MB_CASE_TITLE, "UTF-8");
                 $price = number_format($row["price"]);
                 $imageData = $row['image'];
-                $location = $row['location'];
+                $location = $row['location_title'];
 
                 echo '<div class="col-4 p-2">
                         <div class="card position-relative">
@@ -125,13 +128,14 @@ if (isset($_POST['title']) || isset($_POST['location_id'])) {
         }
     }
 
-    if (empty(trim($_POST["location_id"])) && empty(trim($_POST["title"]))) {
-        $title = trim($_POST["title"]);
-        $title = mb_strtolower($title);
-        $title = ucwords($title);
-        $title = mysqli_real_escape_string($conn, $title);
+    if (empty(trim($_POST["location_id"])) && empty(trim($_POST["searchTerm"]))) {
         $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id ORDER BY reg_date DESC";
-        $result = $conn->query($query);
+        $sql = "SELECT spaces.*, locations.title AS location 
+                    FROM " . $table . "
+                    JOIN locations ON spaces.location = locations.id 
+                    WHERE spaces.is_booked = 0 
+                    ORDER BY spaces.reg_date ASC";
+        $result = $conn->query($sql);
         $spaces_list = $conn->query($query);
         $property_is_taken = $row["is_taken"];
 

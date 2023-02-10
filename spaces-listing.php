@@ -73,13 +73,13 @@ $locations = $conn->query($sql);
     <main>
         <div class="container-fluid py-5 mt-5">
             <div class="container">
-                <form action="post" class="d-flex">
+                <form action="post" class="d-flex" method="post" id="search-form">
                     <div class="col-5 p-1">
-                        <input type="text" class="form-control" name="title" id="title">
+                        <input type="text" class="form-control" name="searchTerm" id="searchTerm">
                     </div>
                     <div class="col-5 p-1">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Select Location</option>
+                        <select class="form-select" aria-label="" id="location_id" name="location_id">
+                            <option value="" selected>Select Location</option>
                             <?php
                             if ($locations->num_rows > 0) {
                                 while ($row = $locations->fetch_assoc()) {
@@ -94,11 +94,11 @@ $locations = $conn->query($sql);
                         </select>
                     </div>
                     <div class="col-2 p-1">
-                        <button type="button" class="btn btn-success rounded-pill px-5">Search</button>
+                        <input type="submit" class="btn btn-success rounded-pill px-5" name="submit" value="Search" />
                     </div>
                 </form>
             </div>
-            <div class="container py-2 my-5 d-flex flex-wrap">
+            <div class="container py-2 my-5 d-flex flex-wrap" id="results">
 
                 <?php
                 if ($list->num_rows > 0) {
@@ -151,6 +151,37 @@ $locations = $conn->query($sql);
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+
+    <!-- JQUERY LINK -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#search-form").submit(function (e) {
+                e.preventDefault();
+                var searchTerm = $("#searchTerm").val();
+                var location_id = $('#location_id').val();
+                console.log({ searchTerm, location_id })
+                if(!searchTerm && !location_id){
+                   return alert("Please enter one of the fields")
+                }
+                $.ajax({
+                    url: "./helpers/search_spaces.php",
+                    type: "post",
+                    data: $('#search-form').serialize(),
+                    success: function (response) {
+                        $("#results").html(response);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        // handle error
+                        console.log({ jqXHR, textStatus, errorThrown });
+                    }
+
+                })
+            });
+        });
+    </script>
+
 
 </body>
 
