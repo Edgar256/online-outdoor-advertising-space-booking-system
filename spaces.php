@@ -114,7 +114,6 @@ $list = $conn->query($sql);
                                                 if ($list->num_rows > 0) {
                                                     while ($row = $list->fetch_assoc()) {
                                                         $imageData = $row['image'];
-                                                        // $imageData = base64_encode($imageData);
 
                                                         echo "<tr>";
                                                         echo "<td scope='row'> #" . $row['id'] . "</td>";

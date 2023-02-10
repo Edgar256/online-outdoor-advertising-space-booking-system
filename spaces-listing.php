@@ -1,3 +1,28 @@
+<?php
+// import Config File
+require('./config/config.php');
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Define variables and initialize with empty values
+$title = $list = "";
+$create_err = "";
+$success_msg = "";
+
+$table = "spaces";
+
+$sql = "SELECT spaces.*, locations.title AS location 
+    FROM " . $table . "
+    JOIN locations ON spaces.location = locations.id 
+    WHERE spaces.is_booked = 0 
+    ORDER BY spaces.reg_date ASC";
+
+$list = $conn->query($sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -62,53 +87,34 @@
             </div>
             <div class="container py-2 my-5 d-flex flex-wrap">
 
-                <div class="col-4 p-2">
-                    <div class="card position-relative">
-                        <img src="assets/img/card.jpg" class="card-img-top" alt="...">
-                        <div class="position-absolute right-0 p-1">
-                            <span class="badge bg-danger">Ntinda</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title my-1">Card with an image on top</h5>
-                            <p class="card-text">Price: $ 10,000 per month</p>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of the card's content.</p>
-                            <button type="button" class="btn btn-success rounded-pill px-5">Book</button>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                if ($list->num_rows > 0) {
+                    while ($row = $list->fetch_assoc()) {
+                        $title = mb_convert_case($row["title"], MB_CASE_TITLE, "UTF-8");
+                        $description = mb_convert_case($row["description"], MB_CASE_TITLE, "UTF-8");
+                        $price = number_format($row["price"]);
+                        $imageData = $row['image'];
+                        $location = $row['location'];
 
-                <div class="col-4 p-2">
-                    <div class="card position-relative">
-                        <img src="assets/img/card.jpg" class="card-img-top" alt="...">
-                        <div class="position-absolute right-0 p-1">
-                            <span class="badge bg-danger">Ntinda</span>
+                        echo '<div class="col-4 p-2">
+                        <div class="card position-relative">
+                            <img src="data:image/jpeg;base64,' . base64_encode($imageData) . '" class="card-img-top" alt="..."/>
+                            <div class="position-absolute right-0 p-1">
+                                <span class="badge bg-danger">' . $location . '</span>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title my-1">' . $title . '</h5>
+                                <p class="card-text">Price: $ ' . $price . ' per month</p>
+                                <p class="card-text">' . $description . '</p>
+                                <button type="button" class="btn btn-success rounded-pill px-5">Book</button>
+                            </div>
                         </div>
-                        <div class="card-body">
-                            <h5 class="card-title my-1">Card with an image on top</h5>
-                            <p class="card-text">Price: $ 10,000 per month</p>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of the card's content.</p>
-                            <button type="button" class="btn btn-success rounded-pill px-5">Book</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-4 p-2">
-                    <div class="card position-relative">
-                        <img src="assets/img/card.jpg" class="card-img-top" alt="...">
-                        <div class="position-absolute right-0 p-1">
-                            <span class="badge bg-danger">Ntinda</span>
-                        </div>
-                        <div class="card-body">
-                            <h5 class="card-title my-1">Card with an image on top</h5>
-                            <p class="card-text">Price: $ 10,000 per month</p>
-                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
-                                of the card's content.</p>
-                            <button type="button" class="btn btn-success rounded-pill px-5">Book</button>
-                        </div>
-                    </div>
-                </div>
+                    </div>';
+                    }
+                } else {
+                    echo "<div class='alert alert-danger'>No Record Found</div>";
+                }
+                ?>
 
             </div>
         </div>
