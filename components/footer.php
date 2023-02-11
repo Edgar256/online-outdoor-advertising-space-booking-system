@@ -3,13 +3,13 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 col-md-6 footer-contact">
-          <h3>TilTop Advertsing Group</h3>
+          <h3>PremierAdvertising Advertsing Group</h3>
           <p>
             Victoria University Street <br>
             Kampal , NY 535022<br>
             Uganda <br><br>
             <strong>Phone:</strong> +1 5589 55488 55<br>
-            <strong>Email:</strong> info@tiltop.com
+            <strong>Email:</strong> info@premieradvertising.com
           </p>
         </div>
         <!-- User login -->

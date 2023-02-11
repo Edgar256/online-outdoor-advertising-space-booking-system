@@ -25,7 +25,7 @@ $list = $conn->query($sql);
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Tables / General - NiceAdmin Bootstrap Template</title>
+    <title>Premier Advertising</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -53,7 +53,7 @@ $list = $conn->query($sql);
     <link rel="stylesheet" href="assets/css/custom.css">
 
     <!-- =======================================================
-  * Template Name: NiceAdmin - v2.5.0
+  * Template Name: PremierAdvertising - v2.5.0
   * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
   * Author: BootstrapMade.com
   * License: https://bootstrapmade.com/license/

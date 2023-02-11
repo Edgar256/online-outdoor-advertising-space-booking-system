@@ -17,7 +17,7 @@ if (isset($_SESSION)) {
     <div class="d-flex align-items-center justify-content-between">
         <a href="dashboard.php" class="logo d-flex align-items-center">
             <img src="assets/img/logo.png" alt="">
-            <span class="d-none d-lg-block">TilTop</span>
+            <span class="d-none d-lg-block">PremierAdvertising</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
