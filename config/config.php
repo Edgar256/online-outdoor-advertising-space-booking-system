@@ -13,7 +13,7 @@ if (!$conn) {
 }
 
 // sql to create users table
-$sql_create_database = "CREATE DATABASE " . DB_NAME;
+$sql_create_database = "CREATE DATABASE IF NOT EXISTS " . DB_NAME;
 
 // connect to database
 if ($conn->query($sql_create_database) !== TRUE) {
@@ -27,7 +27,7 @@ $conn->close();
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 // sql to create users table
-$sql_create_users_table = "CREATE TABLE users (
+$sql_create_users_table = "CREATE TABLE IF NOT EXISTS users (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     names VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -42,7 +42,7 @@ if ($conn->query($sql_create_users_table) !== TRUE) {
 }
 
 // sql to create admins table
-$sql_create_admins_table = "CREATE TABLE admins (
+$sql_create_admins_table = "CREATE TABLE IF NOT EXISTS admins (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     names VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -57,7 +57,7 @@ if ($conn->query($sql_create_admins_table) !== TRUE) {
 }
 
 // sql to create locations table
-$sql_create_locations_table = "CREATE TABLE locations (
+$sql_create_locations_table = "CREATE TABLE IF NOT EXISTS locations (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -69,7 +69,7 @@ if ($conn->query($sql_create_locations_table) !== TRUE) {
 }
 
 // sql to create space table
-$sql_create_spaces_table = "CREATE TABLE spaces (
+$sql_create_spaces_table = "CREATE TABLE IF NOT EXISTS spaces (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,    
     description VARCHAR(255) NOT NULL,
