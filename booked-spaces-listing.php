@@ -10,7 +10,7 @@ if (!isset($_SESSION)) {
 $title = $list = "";
 $create_err = "";
 $success_msg = "";
-$is_booked = 0;
+$is_booked = 1;
 
 $table = "spaces";
 
@@ -74,7 +74,7 @@ $locations = $conn->query($sql);
     <main>
         <div class="container-fluid py-5 mt-5">
             <div class="container">
-                <h1 class="">Available Spaces </h1>
+                <h1 class="">Booked Spaces </h1>
                 <form action="post" class="d-flex" method="post" id="search-form">
                     <div class="col-5 p-1">
                         <input type="text" class="form-control" name="searchTerm" id="searchTerm">
@@ -170,7 +170,7 @@ $locations = $conn->query($sql);
                 var searchTerm = $("#searchTerm").val();
                 var location_id = $('#location_id').val();
                 var is_booked = $('#isBooked').val();
-                console.log({ searchTerm, location_id, is_booked })
+                console.log({ searchTerm, location_id })
                 if (!searchTerm && !location_id) {
                     return alert("Please enter one of the fields")
                 }
@@ -210,7 +210,7 @@ $locations = $conn->query($sql);
                 });
             });
 
-            // AJAX CALL FOR SELL BUTTON
+            // AJAX CALL FOR UNBOOK BUTTON
             $(document).on("click", ".unBookButton", function () {
                 var id = $(this).attr('data-id');
                 var user = $(this).attr('data-user');

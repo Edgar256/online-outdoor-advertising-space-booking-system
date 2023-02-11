@@ -7,6 +7,7 @@ if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
 
     $searchTerm = $_POST['searchTerm'];
     $location_id = $_POST['location_id'];
+    $is_booked = $_POST['is_booked'];
 
     // return error if both are empty
     if (empty(trim($_POST["searchTerm"])) && empty(trim($_POST["location_id"]))) {
@@ -19,7 +20,7 @@ if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
         $searchTerm = mb_strtolower($searchTerm);
         $searchTerm = ucwords($searchTerm);
         $searchTerm = mysqli_real_escape_string($conn, $searchTerm);
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') ORDER BY reg_date DESC";
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') AND is_booked='$is_booked' ORDER BY reg_date DESC";
 
         $result = $conn->query($query);
         $spaces_list = $conn->query($query);
@@ -55,7 +56,7 @@ if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
 
     if (empty(trim($_POST["searchTerm"])) && !empty(trim($_POST["location_id"]))) {
         $location_id = trim($_POST["location_id"]);
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id  WHERE location='$location_id' ORDER BY reg_date DESC";
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id  WHERE location='$location_id' AND is_booked='$is_booked' ORDER BY reg_date DESC";
         $result = $conn->query($query);
         $spaces_list = $conn->query($query);
 
@@ -93,8 +94,8 @@ if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
         $location_id = trim($_POST["location_id"]);
         $searchTerm = mb_strtolower($searchTerm);
         $searchTerm = ucwords($searchTerm);
-        $searchTerm = mysqli_real_escape_string($conn, $searchTerm);        
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') AND location='$location_id' ORDER BY reg_date DESC";
+        $searchTerm = mysqli_real_escape_string($conn, $searchTerm);
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location_title FROM spaces JOIN locations ON spaces.location = locations.id  WHERE UPPER(spaces.title) LIKE UPPER('%$searchTerm%') AND location='$location_id' AND is_booked='$is_booked' ORDER BY reg_date DESC";
 
         $result = $conn->query($query);
         $spaces_list = $conn->query($query);
@@ -129,7 +130,7 @@ if (isset($_POST['searchTerm']) || isset($_POST['location_id'])) {
     }
 
     if (empty(trim($_POST["location_id"])) && empty(trim($_POST["searchTerm"]))) {
-        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id ORDER BY reg_date DESC";
+        $query = "SELECT spaces.*, locations.id AS location_id, locations.title AS location FROM spaces JOIN locations ON spaces.location = locations.id WHERE is_booked='$is_booked' ORDER BY reg_date DESC";
         $sql = "SELECT spaces.*, locations.title AS location 
                     FROM " . $table . "
                     JOIN locations ON spaces.location = locations.id 

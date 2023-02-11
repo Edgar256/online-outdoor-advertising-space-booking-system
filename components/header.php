@@ -52,8 +52,14 @@ if (isset($_SESSION)) {
                         </li>
                         <li>
                             <a class="dropdown-item d-flex align-items-center" href="spaces-listing.php">
-                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                                <i class="bi bi-grid-3x3-gap"></i>
                                 <span>Available Spaces</span>
+                            </a>
+                        </li> 
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center" href="booked-spaces-listing.php">
+                                <i class="bi bi-grid-3x3-gap-fill"></i>
+                                <span>Booked Spaces</span>
                             </a>
                         </li> 
                         <li>
