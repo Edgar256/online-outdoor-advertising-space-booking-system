@@ -11,6 +11,22 @@ if (isset($_SESSION)) {
     $_SESSION['auth_active'] = FALSE;
 }
 
+// Automatically logut after 30 minutes
+$inactive = 1800;
+
+// start session if session is not started
+if (!isset($_SESSION)) {
+  ini_set('session.gc_maxlifetime', $inactive);
+  session_start();
+
+}
+if (isset($_SESSION['email']) && (time() - $_SESSION['time'] > $inactive)) {
+  session_unset(); // unset $_SESSION variable for this page
+  session_destroy(); // destroy session data
+  header("Location: index.php");
+}
+
+
 ?>
 <!-- ======= Header ======= -->
 <header id="header" class="header fixed-top d-flex align-items-center">

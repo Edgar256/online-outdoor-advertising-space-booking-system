@@ -43,7 +43,7 @@
   <main>
     <div class="container-fluid landing-area py-5">
       <div class="container py-5 my-5">
-        <div class="col-8 text-white display-2 pt-5">
+        <div class="col-8 text-white display-2 py-5 mt-5">
           Your One Stop Online Booking Advertising Platform
         </div>
         <?php
@@ -57,26 +57,72 @@
       </div>
     </div>
     <div class="container d-flex p-5">
-      <div class="col-8 mx-auto">
-        <h3 class="text-center">
-          Are you tired of juggling multiple platforms and websites to promote your business? Look no further! Our One
-          Stop Online Booking Advertising Platform is here to simplify your life. With our platform, you can:
-        </h3>
-        <ol>
-          <li>Easily create a professional website and mobile-optimized landing pages to showcase your business. </li>
-          <li>Manage your bookings, availability, and pricing all in one place.</li>
-          <li> Reach potential customers with targeted advertising through our platform and Google.</li>
-          <li>Gain insights into your business performance with detailed analytics and reporting.</li>
-          <li> Connect with your customers through built-in email marketing tools and personalized communication.</li>
-        </ol>
+      <div class="col-12 mx-auto">
+        <div class="py-5 my-5">
+          <h1 class="text-center py-5 my-5">
+            Are you tired of juggling multiple platforms and websites to promote your business? Look no further! Our One
+            Stop Online Booking Advertising Platform is here to simplify your life. With our platform, you can:
+          </h1>
+        </div>
+        <div class="d-md-flex py-5">
+          <div class="col-6">
+            <img src="assets/img/web-app.jpg" class="img-fluid rounded" alt="">
+          </div>
+          <div class="col-6 text-center d-flex justify-content-center align-items-center">
+            <h2>
+              Easily book a space of our many advertising spaces with just a Click.
+            </h2>
+          </div>
+        </div>
+        <div class="d-md-flex py-5">
+          <div class="col-6 text-center d-flex justify-content-center align-items-center">
+            <h2>
+              Manage your bookings, availability, and pricing all in one place.
+            </h2>
+          </div>
+          <div class="col-6">
+            <img src="assets/img/calendar.png" class="img-fluid rounded" alt="">
+          </div>
+        </div>
+        <div class="d-md-flex py-5">
+          <div class="col-6">
+            <img src="assets/img/customers.png" class="img-fluid rounded" alt="">
+          </div>
+          <div class="col-6 text-center d-flex justify-content-center align-items-center">
+            <h2>
+              Reach potential customers with targeted advertising through our platform and Google.
+            </h2>
+          </div>
+        </div>
+        <div class="d-md-flex py-5">
+          <div class="col-6 text-center d-flex justify-content-center align-items-center">
+            <h2>
+              Gain insights into your business performance with detailed analytics and reporting
+            </h2>
+          </div>
+          <div class="col-6">
+            <img src="assets/img/analytics.png" class="img-fluid rounded" alt="">
+          </div>
+        </div>
+        <div class="py-5 my-5">
+          <div class="py-5 my-5">
+            <h1 class="text-center py-5">
+              No matter what type of business you have, our platform has got you covered. From hotels and tours to spas
+              and
+              salons, our platform is designed to help you grow your business and reach more customers.
 
+              Say goodbye to the hassle of multiple platforms and hello to streamlined success with Our One Stop Online
+              Booking Advertising Platform.
+            </h1>
+            <h1 class="text-center pt-5">
+              Get started today!
+            </h1>
+            <div class="d-flex justify-content-center align-items-center">
+              <a href="user-register.php" class="btn btn-outline-primary rounded-pill mx-5">Create Account</a>
+            </div>
 
-
-        No matter what type of business you have, our platform has got you covered. From hotels and tours to spas and
-        salons, our platform is designed to help you grow your business and reach more customers.
-
-        Say goodbye to the hassle of multiple platforms and hello to streamlined success with Our One Stop Online
-        Booking Advertising Platform. Get started today!
+          </div>
+        </div>
       </div>
     </div>
   </main><!-- End #main -->

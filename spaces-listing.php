@@ -6,6 +6,7 @@ if (!isset($_SESSION)) {
     session_start();
 }
 
+
 // Define variables and initialize with empty values
 $title = $list = "";
 $create_err = "";
@@ -26,6 +27,12 @@ $table = "locations";
 
 $sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
 $locations = $conn->query($sql);
+
+if (!isset($_SESSION['names'])) {
+    session_unset(); // unset $_SESSION variable for this page
+    session_destroy(); // destroy session data
+    header("Location: index.php");
+}            
 
 ?>
 
@@ -101,6 +108,7 @@ $locations = $conn->query($sql);
                     </div>
                 </form>
             </div>
+            
             <div class="container py-2 my-5 d-flex flex-wrap" id="results">
 
                 <?php

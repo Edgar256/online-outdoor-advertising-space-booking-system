@@ -27,6 +27,13 @@ $table = "locations";
 $sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
 $locations = $conn->query($sql);
 
+
+if (!isset($_SESSION['names'])) {
+    session_unset(); // unset $_SESSION variable for this page
+    session_destroy(); // destroy session data
+    header("Location: index.php");
+}  
+
 ?>
 
 <!DOCTYPE html>

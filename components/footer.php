@@ -1,6 +1,6 @@
 <!-- ======= Footer ======= -->
-<footer class="footer">
-    <div class="container">
+<footer class="footer bg-dark text-white py-5">
+    <div class="container py-5 my-5">
       <div class="row">
         <div class="col-lg-6 col-md-6 footer-contact">
           <h3>PremierAdvertising Advertsing Group</h3>
