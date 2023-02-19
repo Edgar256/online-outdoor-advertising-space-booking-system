@@ -7,7 +7,7 @@ if (!isset($_SESSION)) {
 }
 
 // Define variables and initialize with empty values
-$count_users = $count_admins = $count_spaces  = 0;
+$count_users = $count_admins = $count_spaces = $count_locations  = 0;
 
 $sql = "SELECT COUNT(*) FROM users";
 $result = $conn->query($sql);
@@ -34,6 +34,15 @@ if ($result->num_rows > 0) {
   $count_spaces = $row["COUNT(*)"];
 } else {
   $count_spaces = 0;
+}
+
+$sql = "SELECT COUNT(*) FROM locations";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  $row = $result->fetch_assoc();
+  $count_locations = $row["COUNT(*)"];
+} else {
+  $count_locations = 0;
 }
 
 
@@ -103,10 +112,10 @@ if ($result->num_rows > 0) {
       <div class="row">
 
         <!-- Left side columns -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
           <div class="row">
 
-            <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">                
 
                 <div class="card-body">
@@ -125,7 +134,7 @@ if ($result->num_rows > 0) {
               </div>
             </div>
 
-            <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">                
 
                 <div class="card-body">
@@ -144,7 +153,7 @@ if ($result->num_rows > 0) {
               </div>
             </div>
 
-            <div class="col-xxl-4 col-md-6">
+            <div class="col-xxl-3 col-md-6">
               <div class="card info-card sales-card">                
 
                 <div class="card-body">
@@ -156,6 +165,25 @@ if ($result->num_rows > 0) {
                     </div>
                     <div class="ps-3">
                       <h6><?php echo $count_spaces; ?></h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-xxl-3 col-md-6">
+              <div class="card info-card sales-card">                
+
+                <div class="card-body">
+                  <h5 class="card-title">Locations</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="bi bi-cart"></i>
+                    </div>
+                    <div class="ps-3">
+                      <h6><?php echo $count_locations; ?></h6>
                     </div>
                   </div>
                 </div>

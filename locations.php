@@ -88,7 +88,6 @@ $list = $conn->query($sql);
 
           <div class="">
             <div class="">
-              <h5 class="card-title">Locations</h5>
 
               <div class="section">
                 <div class="row">
@@ -110,8 +109,7 @@ $list = $conn->query($sql);
                           </div>
                           <div class="mb-3 d-flex justify-content-center align-items-center">
                             <div class="">
-                              <button type="submit" class="btn btn-primary">Submit
-                                Form</button>
+                              <button type="submit" class="btn btn-primary rounded-pill">Create Location</button>
                             </div>
                           </div>
                         </form><!-- End General Form Elements -->
