@@ -106,6 +106,7 @@ $list = $conn->query($sql);
                                                     <th scope="col">Price</th>
                                                     <th scope="col">Status</th>
                                                     <th scope="col">Date Posted</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -127,6 +128,7 @@ $list = $conn->query($sql);
                                                             echo "<td><span class='badge bg-secondary'>Available</span></td>";
                                                         }
                                                         echo "<td>" . $row['reg_date'] . "</td>";
+                                                        echo "<td> <button class='btn btn-primary rounded-pill'>EditSpace</button></td>";
                                                         echo "</tr>";
                                                     }
                                                 } else {

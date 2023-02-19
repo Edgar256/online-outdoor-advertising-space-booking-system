@@ -1,3 +1,43 @@
+<?php
+// import Config File
+require('./config/config.php');
+
+if (!isset($_SESSION)) {
+    session_start();
+}
+
+// Define variables and initialize with empty values
+$count_users = $count_admins = $count_spaces  = 0;
+
+$sql = "SELECT COUNT(*) FROM users";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  $row = $result->fetch_assoc();
+  $count_users = $row["COUNT(*)"];
+} else {
+  $count_users = 0;
+}
+
+$sql = "SELECT COUNT(*) FROM admins";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  $row = $result->fetch_assoc();
+  $count_admins = $row["COUNT(*)"];
+} else {
+  $count_admins = 0;
+}
+
+$sql = "SELECT COUNT(*) FROM spaces";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  $row = $result->fetch_assoc();
+  $count_spaces = $row["COUNT(*)"];
+} else {
+  $count_spaces = 0;
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -77,8 +117,7 @@
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>XXX</h6>
-
+                      <h6><?php echo $count_users; ?></h6>
                     </div>
                   </div>
                 </div>
@@ -97,8 +136,7 @@
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>XXX</h6>
-
+                      <h6><?php echo $count_admins; ?></h6>
                     </div>
                   </div>
                 </div>
@@ -117,8 +155,7 @@
                       <i class="bi bi-cart"></i>
                     </div>
                     <div class="ps-3">
-                      <h6>XXX</h6>
-
+                      <h6><?php echo $count_spaces; ?></h6>
                     </div>
                   </div>
                 </div>
