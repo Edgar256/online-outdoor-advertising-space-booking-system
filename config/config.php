@@ -33,7 +33,7 @@ $sql_create_users_table = "CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(255) NOT NULL DEFAULT 'USER',
     password VARCHAR(255) NOT NULL,
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
 // create Users table
@@ -48,7 +48,7 @@ $sql_create_admins_table = "CREATE TABLE IF NOT EXISTS admins (
     email VARCHAR(255) NOT NULL UNIQUE,
     role VARCHAR(255) NOT NULL DEFAULT 'ADMIN',
     password VARCHAR(255) NOT NULL,
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
 // create Users table
@@ -60,7 +60,7 @@ if ($conn->query($sql_create_admins_table) !== TRUE) {
 $sql_create_locations_table = "CREATE TABLE IF NOT EXISTS locations (
     id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
 // create Locations table
@@ -86,7 +86,7 @@ $sql_create_spaces_table = "CREATE TABLE IF NOT EXISTS spaces (
     user INT(6) UNSIGNED,
     FOREIGN KEY (user) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL,
      
-    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
 
 // create Managers table

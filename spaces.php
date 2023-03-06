@@ -13,7 +13,12 @@ $success_msg = "";
 
 $table = "spaces";
 
-$sql = "SELECT *  FROM " . $table . " ORDER BY reg_date ASC";
+$sql = "SELECT spaces.* ,
+            COALESCE(users.names, 'N/A') AS user_names,
+            COALESCE(users.email, 'N/A') AS user_email 
+            FROM " . $table . " 
+            LEFT JOIN users ON spaces.user = users.id
+            ORDER BY spaces.reg_date ASC";
 $list = $conn->query($sql);
 
 ?>
@@ -51,6 +56,8 @@ $list = $conn->query($sql);
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/custom.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- =======================================================
   * Template Name: PremierAdvertising - v2.5.0
@@ -105,6 +112,7 @@ $list = $conn->query($sql);
                                                     <th scope="col">Description</th>
                                                     <th scope="col">Price</th>
                                                     <th scope="col">Status</th>
+                                                    <th scope="col">User_Who_Booked</th>
                                                     <th scope="col">Date Posted</th>
                                                     <th scope="col">Action</th>
                                                 </tr>
@@ -115,6 +123,8 @@ $list = $conn->query($sql);
                                                 if ($list->num_rows > 0) {
                                                     while ($row = $list->fetch_assoc()) {
                                                         $imageData = $row['image'];
+                                                        $imgData = base64_encode($row['image']);
+                                                        $src = 'data:image/jpeg;base64,' . $imgData;
 
                                                         echo "<tr>";
                                                         echo "<td scope='row'> #" . $row['id'] . "</td>";
@@ -127,9 +137,82 @@ $list = $conn->query($sql);
                                                         } else {
                                                             echo "<td><span class='badge bg-secondary'>Available</span></td>";
                                                         }
+                                                        echo "<td>" . $row['user_names'] . "</td>";
                                                         echo "<td>" . $row['reg_date'] . "</td>";
-                                                        echo "<td> <button class='btn btn-primary rounded-pill'>EditSpace</button></td>";
+                                                        echo "<td> <button class='btn btn-primary rounded-pill'  data-bs-toggle='modal' data-bs-target='#editModal" . $row['id'] . "'>EditSpace</button></td>";
                                                         echo "</tr>";
+
+                                                        echo "<div class='modal fade' id='editModal" . $row['id'] . "' tabindex='-1'>
+                                                        <div class='modal-dialog modal-dialog-centered'>
+                                                          <div class='modal-content'>
+                                                            <div class='modal-header'>
+                                                              <h5 class='modal-title text-center'>EDIT SPACE MODAL</h5>
+                                                              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                                            </div>
+                                                            <div class='modal-body'>
+                                                            <form id='edit-form" . $row['id'] . "' class='d-xl-flex flex-wrap d-md-flex d-sm-block' method='post'>";
+
+                                                        echo "<img src='" . $src . "' alt='Property Image' class='img-fluid mb-3 w-100' />";
+
+                                                        echo "<input type='text' class='form-control' name='id' id='currentSpace" . $row['id'] . "' value='" . $row['id'] . "' hidden />
+                                                                                <div class='col-xl-12 col-md-12 col-sm-12 p-3'>
+                                                                                    <label for='title' class='form-label'>Space Title <span class='text-danger pl-2'>*</span></label>
+                                                                                    <input type='text' class='form-control' value='" . $row['title'] . "' placeholder='" . $row['title'] . "' name='title' id='title" . $row['id'] . "' />
+                                                                                </div>
+                                                                                <div class='col-xl-12 col-md-12 col-sm-12 p-3'>
+                                                                                    <label for='title' class='form-label'>Price <span class='text-danger pl-2'>*</span></label>
+                                                                                    <input type='text' class='form-control' value='" . $row['price'] . "' placeholder='" . number_format($row['price']) . "'  name='price' id='price" . $row['id'] . "' />
+                                                                                </div>
+                                                                                <div class='col-xl-12 col-md-12 col-sm-12 p-3'>
+                                                                                    <label for='title' class='form-label'>Description <span class='text-danger pl-2'>*</span></label>
+                                                                                    <textarea class='form-control' name='description' value='" . $row['description'] . "' id='description" . $row['id'] . "' rows='5' maxLength='254' id='description" . $row['id'] . "'>" . $row['description'] . "</textarea>
+                                                                                </div>
+                                                                                <div class='modal-footer d-flex justify-content-between'>
+                                                                                    <button type='button' class='btn btn-secondary rounded-pill' data-bs-dismiss='modal'>DISMISS MODAL</button>                                                                                    
+                                                                                    <input type='submit' name='delete' value='SAVE EDITS' class='btn btn-primary rounded-pill'/>
+                                                                                </div>
+                                                                            </form> 
+                                                            </div>
+                                                            
+                                                          </div>
+                                                        </div>
+                                                      </div>";
+
+                                                        echo '<script> $(document).ready(function () {
+                                                        $("#edit-form' . $row['id'] . '").submit(function (e) {
+                                                            e.preventDefault();
+                                                            var form = $(this);
+                                                            var currentSpace = $("#currentSpace' . $row['id'] . '").val();
+                                                            var title = $("#title' . $row['id'] . '").val();
+                                                            var price = $("#price' . $row['id'] . '").val();
+                                                            var description = $("#description' . $row['id'] . '").val();
+                    
+                                                            if( title=="" || price=="" || description=="" ){
+                                                                alert("Please fill all the fields");
+                                                                return;
+                                                            }
+                    
+                                                            console.log({currentSpace, title, price, description});
+                    
+                                                            $.ajax({
+                                                                type: "post",
+                                                                url: "./helpers/edit_space.php",
+                                                                data: { currentSpace, title, price, description},
+                                                                success: function (data) {
+                                                                    if (data == "success") {
+                                                                        alert("Space updated successfully");
+                                                                        location.reload();
+                                                                    } else {
+                                                                        console.log("Space update failed");
+                                                                        console.log(data);
+                                                                        alert("Space update failed");
+                                                                    }
+                                                                }
+                                                            });
+                                                        });
+                                                    }); </script>';
+
+
                                                     }
                                                 } else {
                                                     echo "<div class='alert alert-danger'>No Record Found</div>";

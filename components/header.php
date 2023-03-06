@@ -3,11 +3,11 @@
 require_once('./config/config.php');
 
 // set FALSE to AUTH_ACTIVE SESSION VARIABLE
-if (isset($_SESSION)) {
+if (!isset($_SESSION)) {
     session_start();
     $_SESSION['auth_active'] = FALSE;
 } else {
-    session_start();
+    // session_start();
     $_SESSION['auth_active'] = FALSE;
 }
 

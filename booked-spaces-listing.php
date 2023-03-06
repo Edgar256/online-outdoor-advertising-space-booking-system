@@ -13,11 +13,15 @@ $success_msg = "";
 $is_booked = 1;
 
 $table = "spaces";
+$userId = $_SESSION['id'];
 
-$sql = "SELECT spaces.*, locations.title AS location 
+
+$sql = "SELECT spaces.*, locations.title AS location ,
+    COALESCE(users.id, 'N/A') AS user_id
     FROM " . $table . "
     JOIN locations ON spaces.location = locations.id 
-    WHERE spaces.is_booked = " . $is_booked . "
+    JOIN users ON spaces.user=users.id
+    WHERE spaces.is_booked = " . $is_booked . " AND spaces.user = " . $userId . "
     ORDER BY spaces.reg_date ASC";
 
 $list = $conn->query($sql);
@@ -32,7 +36,7 @@ if (!isset($_SESSION['names'])) {
     session_unset(); // unset $_SESSION variable for this page
     session_destroy(); // destroy session data
     header("Location: index.php");
-}  
+}
 
 ?>
 
